@@ -48,12 +48,10 @@ Raw Events  ──►  ETL (Pandas)  ──►  Database  ──►  Analytics /
 
 ## 3. Demonstração
 
-O fluxo principal cabe em ~15 segundos: subir o backend com dados de seed, abrir o dashboard, clicar em **"Rodar ETL + Modelos ML"** e ver os KPIs, a telemetria e o painel de risco/anomalia preenchidos.
+O fluxo principal cabe em 15 segundos: subir o backend com dados de seed, abrir o dashboard, clicar em **"Rodar ETL + Modelos ML"** e ver os KPIs, a telemetria e o painel de risco/anomalia preenchidos.
 
 - **Demo / Deploy:** _[adicionar link do Vercel (front) + Render (API) após o deploy]_
 - **Docs interativas da API:** `http://localhost:8000/docs`
-
-> _Dica: grave um GIF de ~15s do clique no botão preenchendo os painéis e cole aqui._
 
 ---
 
