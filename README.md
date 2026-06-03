@@ -1,6 +1,6 @@
 # Cortex Analytics Platform
 
-![status](https://img.shields.io/badge/status-V1%20base-blue)
+![status](https://img.shields.io/badge/status-em%20desenvolvimento-blue)
 ![backend](https://img.shields.io/badge/backend-FastAPI-009688)
 ![frontend](https://img.shields.io/badge/frontend-React-61DAFB)
 ![ml](https://img.shields.io/badge/ML-scikit--learn-F7931E)
@@ -148,7 +148,7 @@ docker compose up --build
 ## 7. Roadmap / Próximos Passos
 
 - **V1 — Base** ✅ — estrutura, API REST, ETL, dashboard com KPIs e gráficos.
-- **V2 — Machine Learning** 🔜 — Isolation Forest (anomalias) + Random Forest (predição de falha).
+- **V2 — Machine Learning** ✅ — Isolation Forest (anomalias) + Random Forest (predição de falha) com alertas automáticos.
 - **V3 — Tempo real** — ingestão e atualização via WebSocket, alertas em streaming.
 - **V4 — Observabilidade** — métricas Prometheus + dashboards Grafana.
 - **V5 — Escala** — ingestão via Kafka, deploy cloud, persistência de modelos versionados.

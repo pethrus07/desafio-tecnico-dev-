@@ -6,7 +6,8 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 # Domínio: monitoramento de ativos (máquinas/sensores).
-# Asset -> tem vários Event (leituras). Metric e Alert são derivados gerados pelo ETL.
+# Asset -> tem vários Event (leituras). Metric, Alert e Prediction
+# são derivados gerados pelo ETL e pelos modelos.
 
 
 class Asset(Base):
@@ -56,3 +57,15 @@ class Alert(Base):
     message = Column(String, nullable=False)
     source = Column(String, default="threshold")  # threshold | anomaly_model | failure_model
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+
+class Prediction(Base):
+    __tablename__ = "predictions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    asset_id = Column(Integer, ForeignKey("assets.id"), index=True)
+    model = Column(String, nullable=False)     # random_forest | isolation_forest
+    target = Column(String, nullable=False)    # failure_risk | anomaly
+    score = Column(Float, nullable=False)
+    label = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

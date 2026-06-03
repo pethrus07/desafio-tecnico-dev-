@@ -11,5 +11,8 @@ export const api = {
   summary: () => req("/api/dashboard/summary"),
   events: () => req("/api/events?limit=300"),
   alerts: () => req("/api/alerts"),
+  predictions: () => req("/api/ml/predictions"),
   runEtl: () => req("/api/etl/run", { method: "POST" }),
+  runAnomalies: () => req("/api/ml/anomalies/run", { method: "POST" }),
+  runFailures: () => req("/api/ml/failures/run", { method: "POST" }),
 };

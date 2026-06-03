@@ -59,6 +59,16 @@ class AlertOut(BaseModel):
     created_at: datetime
 
 
+class PredictionOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    asset_id: int
+    model: str
+    target: str
+    score: float
+    label: str
+    created_at: datetime
+
 
 # Resposta agregada usada nos KPIs do topo do dashboard.
 class KPISummary(BaseModel):
