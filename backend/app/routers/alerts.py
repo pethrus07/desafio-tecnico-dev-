@@ -1,3 +1,9 @@
+"""Leitura dos alertas. Só leitura.
+
+Alerta não nasce de requisição: quem escreve é o ETL (por limiar) e os dois
+modelos de ML. Esta rota existe para o painel do dashboard, e ordena do mais
+recente para o mais antigo porque é assim que o painel mostra.
+"""
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 

@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 from app.database import Base, SessionLocal, engine
 from app import models
 
+# Semente fixa: a demonstração precisa dar o mesmo banco toda vez, senão os
+# números do README e os do dashboard nunca batem.
 random.seed(42)
 
 ASSETS = [
@@ -23,6 +25,8 @@ ASSETS = [
 
 
 def generate():
+    # DERRUBA e recria tudo. O seed é para demonstração, não para completar
+    # base existente: apontado para o Postgres do compose, apaga os dados.
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 

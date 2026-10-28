@@ -1,3 +1,9 @@
+/**
+ * A lista dos alertas gerados pelo ETL e pelos dois modelos.
+ * Só apresenta: não busca nada e não sabe de onde o alerta veio além do campo
+ * `source`. A cor sai da severidade, com `info` como padrão — se o backend
+ * inventar uma severidade nova, o painel degrada em vez de quebrar.
+ */
 export default function AlertsPanel({ alerts }) {
   const colors = {
     critical: "border-cortex-crit text-cortex-crit",

@@ -1,3 +1,9 @@
+/**
+ * O quadrado de número do topo do dashboard. Puro: rótulo, valor, sufixo, tom.
+ * O `tone` existe para a cor mudar sem o componente saber o que o número
+ * significa — quem decide se um uptime é bom é o App.jsx, e é lá que a regra
+ * fica visível em vez de escondida na peça de tela.
+ */
 export default function KPICard({ label, value, suffix = "", tone = "accent" }) {
   const tones = {
     accent: "text-cortex-accent",

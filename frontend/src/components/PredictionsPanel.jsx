@@ -1,3 +1,9 @@
+/**
+ * O painel de ML: risco de falha e anomalia, um embaixo do outro.
+ * A API devolve as predições dos dois modelos na mesma lista; é o front que
+ * faz o corte pelo campo `target`. As duas seções reusam o mesmo componente
+ * interno porque o formato da linha é idêntico — muda só o rótulo e o modelo.
+ */
 const RISK_COLORS = {
   high_risk: "bg-cortex-crit/20 text-cortex-crit",
   medium_risk: "bg-cortex-warn/20 text-cortex-warn",
@@ -6,6 +12,10 @@ const RISK_COLORS = {
   normal: "bg-cortex-ok/20 text-cortex-ok",
 };
 
+// O mesmo campo `score` quer dizer coisas diferentes conforme o `target`:
+// em failure_risk é a probabilidade média das leituras do ativo; em anomaly
+// é a fração de leituras que o Isolation Forest isolou. Os dois vão de 0 a 1,
+// e é só por isso que a mesma linha serve para os dois casos.
 function Section({ title, modelName, items }) {
   return (
     <div>

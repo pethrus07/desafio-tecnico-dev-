@@ -1,3 +1,9 @@
+/**
+ * A série de telemetria: temperatura, vibração e pressão num gráfico só.
+ * Recebe os eventos crus da API e apenas os prepara para o Recharts — não
+ * busca nada e não agrega nada. Atenção ao que o eixo X realmente é: está no
+ * comentário do `data` abaixo e na seção 7 de docs/ARQUITETURA.md.
+ */
 import {
   CartesianGrid,
   Legend,
@@ -11,6 +17,11 @@ import {
 
 export default function MetricsChart({ events }) {
   // Inverte pra ficar em ordem cronológica e mapeia pro formato do gráfico.
+  // Duas coisas a saber antes de ler esse gráfico: (1) o eixo X é a POSIÇÃO
+  // na lista, não o horário — leituras com espaçamento diferente aparecem
+  // igualmente espaçadas; (2) a API devolve os eventos de TODOS os ativos
+  // ordenados por timestamp, então cada linha costura ativos diferentes.
+  // Serve de panorama; não serve para ler a curva de um equipamento.
   const data = events
     .slice()
     .reverse()

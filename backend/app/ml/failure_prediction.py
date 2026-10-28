@@ -1,3 +1,11 @@
+"""Risco de falha por Random Forest, agregado por ativo.
+
+Aprende a assinatura de sensor de uma leitura marcada `down` e devolve, por
+ativo, a probabilidade média de as leituras dele se parecerem com isso.
+Cuidado com a leitura do número: é um retrato do histórico, não uma previsão
+do futuro — o porquê está no comentário do treino e na seção 6 de
+`docs/ARQUITETURA.md`.
+"""
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sqlalchemy.orm import Session
@@ -33,6 +41,13 @@ def predict_failures(db: Session) -> dict:
     if df["failed"].nunique() < 2:
         return {"trained": False, "reason": "sem variabilidade de classes no histórico"}
 
+    # Duas ressalvas que mudam como o número deve ser lido:
+    # 1) treino e escore saem das MESMAS linhas, sem conjunto de teste — a
+    #    probabilidade é o modelo reconhecendo o histórico, não generalizando;
+    # 2) `failed` é o status da própria leitura, não uma falha que veio depois
+    #    dela, então o que sai daqui classifica o estado presente do ativo.
+    # Para virar previsão de verdade, o rótulo teria de olhar uma janela à
+    # frente do evento (por exemplo: "houve down nas próximas 24h?").
     model = RandomForestClassifier(
         n_estimators=200, max_depth=8, class_weight="balanced", random_state=42
     )

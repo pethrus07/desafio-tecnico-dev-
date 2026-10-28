@@ -1,3 +1,10 @@
+"""Detecção de anomalia por Isolation Forest, agregada por ativo.
+
+O modelo pontua leitura a leitura, mas o que a plataforma guarda é a *fração*
+de leituras anômalas de cada ativo — o dashboard fala de equipamento, não de
+linha de tabela. Nenhum rótulo de falha entra aqui: este é o lado
+não-supervisionado, o contraponto ao `failure_prediction.py`.
+"""
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sqlalchemy.orm import Session
@@ -21,6 +28,11 @@ def detect_anomalies(db: Session, contamination: float = 0.08) -> dict:
         [{**{f: getattr(r, f) for f in FEATURES}, "asset_id": r.asset_id} for r in rows]
     )
 
+    # `contamination` é uma cota, não uma descoberta: o Isolation Forest vai
+    # separar ~8% das leituras como anômalas mesmo que a operação esteja
+    # impecável. É por isso que o rótulo por ativo só sai acima de 15% (mais
+    # do que o dobro da taxa global) e por isso a leitura honesta é "este
+    # ativo destoa dos outros", não "este ativo está com defeito".
     model = IsolationForest(n_estimators=150, contamination=contamination, random_state=42)
     df["anomaly"] = model.fit_predict(df[FEATURES])  # -1 = anômalo, 1 = normal
 

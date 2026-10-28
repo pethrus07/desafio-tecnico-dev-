@@ -1,3 +1,10 @@
+/*
+ * A folha de estilo da aplicação. Praticamente tudo é Tailwind: as três
+ * diretivas abaixo somem no build e viram só as classes realmente usadas
+ * (a varredura está em tailwind.config.js). O bloco do body existe à parte
+ * porque a cor de fundo e a fonte precisam valer antes de o React montar,
+ * senão a tela pisca branca no primeiro quadro.
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

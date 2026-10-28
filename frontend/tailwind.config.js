@@ -1,3 +1,10 @@
+/**
+ * O tema do dashboard. A paleta `cortex` é a fonte da verdade das cores:
+ * ok/warn/crit são semânticas (estado do ativo), não decorativas, e é por elas
+ * que KPICard, AlertsPanel e PredictionsPanel escolhem cor sem repetir
+ * hexadecimal. `content` precisa listar todo arquivo que use classe: o que não
+ * for varrido aqui tem a classe removida do CSS final e some da tela.
+ */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],

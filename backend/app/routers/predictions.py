@@ -1,3 +1,10 @@
+"""Rotas de ML: dispara os dois modelos e lê o que eles gravaram.
+
+Treino e inferência acontecem dentro da requisição, sem modelo salvo em disco:
+cada POST retreina do zero sobre o histórico inteiro do banco. É o que torna o
+botão do dashboard suficiente e o que impede servir predição de um modelo
+velho — em troca, o custo do treino é pago em toda chamada.
+"""
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 

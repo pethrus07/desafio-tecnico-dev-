@@ -1,3 +1,10 @@
+"""Os contratos de entrada e saída da API (Pydantic v2).
+
+Existem separados de `models.py` justamente para a resposta não ser o espelho
+da tabela e para a entrada não aceitar campo que é do servidor (`id`,
+`created_at`, `timestamp`). `from_attributes=True` é o que deixa o FastAPI
+serializar o objeto do ORM direto, sem conversão à mão.
+"""
 from datetime import datetime
 from typing import Optional
 

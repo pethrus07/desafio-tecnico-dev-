@@ -1,3 +1,10 @@
+"""Rotas do ETL e dos números do topo do dashboard.
+
+Os dois moram juntos porque leem a mesma tabela de eventos: `POST /api/etl/run`
+dispara o pipeline, e `GET /api/dashboard/summary` calcula os KPIs na hora.
+Repare que o resumo NÃO lê a tabela `metrics` que o ETL grava — os dois
+caminhos são independentes, e é possível ter KPI sem nunca ter rodado o ETL.
+"""
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -25,8 +32,13 @@ def list_metrics(asset_id: int | None = None, db: Session = Depends(get_db)):
 def dashboard_summary(db: Session = Depends(get_db)):
     total_assets = db.query(models.Asset).count()
     total_events = db.query(models.Event).count()
+    # "open" é só o nome do campo: conta TODOS os alertas, porque não existe
+    # coluna de resolução. Como o ETL apaga a tabela e regrava, o número na
+    # prática significa "alertas do último processamento".
     open_alerts = db.query(models.Alert).count()
 
+    # As médias saem em Python, sobre a tabela inteira carregada na memória.
+    # Cabe nos 300 eventos do seed; em volume real isto vira AVG() no SQL.
     events = db.query(models.Event).all()
     if events:
         avg_temp = sum(e.temperature for e in events) / len(events)

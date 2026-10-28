@@ -1,3 +1,10 @@
+/**
+ * O dashboard inteiro: o estado, a carga dos dados e a disposição dos painéis.
+ * É o único componente com estado — os quatro painéis são de apresentação e
+ * recebem tudo por props, o que os torna testáveis sem servidor. Aqui também
+ * vive a ordem em que os pipelines rodam, que não é arbitrária (ver o
+ * comentário em runPipelines).
+ */
 import { useEffect, useState } from "react";
 import { api } from "./api";
 import KPICard from "./components/KPICard";
@@ -16,6 +23,9 @@ export default function App() {
   async function loadAll() {
     try {
       setError(null);
+      // Os quatro pedidos vão juntos porque são independentes e a tela só
+      // faz sentido completa. Em compensação, um erro em qualquer um deles
+      // derruba os quatro e a tela mostra o aviso genérico.
       const [s, e, a, p] = await Promise.all([
         api.summary(),
         api.events(),
@@ -32,6 +42,9 @@ export default function App() {
   }
 
   // Roda ETL + os dois modelos em sequência e recarrega a tela.
+  // A ordem não é estilo: o ETL apaga a tabela de alertas inteira antes de
+  // gravar a dele, então tem de vir primeiro. Chamado depois dos modelos,
+  // levaria junto os alertas de anomalia e de risco que eles criaram.
   async function runPipelines() {
     setLoading(true);
     try {

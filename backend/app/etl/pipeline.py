@@ -1,3 +1,11 @@
+"""Extract-transform-load dos eventos: agrega por ativo e gera alerta.
+
+Lê tudo o que está em `events`, agrega numa passagem de pandas, apaga o
+derivado antigo e regrava. É idempotente de propósito: rodar duas vezes dá
+exatamente o mesmo banco, o que permite chamar o pipeline sem medo pelo botão
+do dashboard. O julgamento de engenharia deste arquivo são os limiares fixos
+abaixo; a parte estatística fica em `app/ml`.
+"""
 import pandas as pd
 from sqlalchemy.orm import Session
 
@@ -12,6 +20,8 @@ THRESHOLDS = {
 
 
 def _events_to_dataframe(db: Session) -> pd.DataFrame:
+    # Traz a tabela inteira. É o preço da simplicidade e o primeiro ponto a
+    # doer quando o histórico crescer — não há filtro de janela nem de ativo.
     rows = db.query(models.Event).all()
     if not rows:
         return pd.DataFrame()
@@ -44,12 +54,18 @@ def run_etl(db: Session) -> dict:
             max_temperature=("temperature", "max"),
             avg_vibration=("vibration", "mean"),
             avg_pressure=("pressure", "mean"),
+            # max, e não sum: runtime_hours é um contador acumulado do ativo.
+            # Somar as leituras contaria as mesmas horas dezenas de vezes.
             total_runtime=("runtime_hours", "max"),
         )
         .reset_index()
     )
 
     # Recalcula do zero a cada run pra não duplicar (rodar 2x dá o mesmo resultado).
+    # Cuidado: o delete de Alert leva junto os alertas de anomaly_model e de
+    # failure_model, que não são deste pipeline. Por isso a ordem no
+    # dashboard é ETL primeiro, modelos depois — invertida, o painel de
+    # alertas perde tudo o que o ML tinha acabado de escrever.
     db.query(models.Metric).delete()
     db.query(models.Alert).delete()
 

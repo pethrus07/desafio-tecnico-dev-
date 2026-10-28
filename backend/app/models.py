@@ -1,3 +1,10 @@
+"""As cinco tabelas do domínio, em SQLAlchemy ORM.
+
+Duas guardam fato bruto — `Asset` (o equipamento) e `Event` (uma leitura dos
+sensores) — e três guardam derivado, apagado e recalculado do zero a cada
+execução: `Metric` e `Alert` pelo ETL, `Prediction` pelos modelos de ML.
+Perder as três derivadas não perde informação; perder `Event` perde tudo.
+"""
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
@@ -31,6 +38,10 @@ class Event(Base):
     vibration = Column(Float, nullable=False)
     pressure = Column(Float, nullable=False)
     runtime_hours = Column(Float, nullable=False, default=0.0)
+    # O contrato de `status` é este comentário e nada mais: não há Enum nem
+    # CHECK no banco. Valor fora da lista entra sem reclamar, e como o
+    # failure_prediction usa `status == "down"` de rótulo, um typo vira
+    # modelo treinado errado sem nenhum erro na tela.
     status = Column(String, default="ok")  # ok | warning | down
     timestamp = Column(DateTime, default=datetime.utcnow, index=True)
 
@@ -44,6 +55,8 @@ class Metric(Base):
     asset_id = Column(Integer, ForeignKey("assets.id"), index=True)
     name = Column(String, nullable=False)
     value = Column(Float, nullable=False)
+    # `window` foi pensada para guardar a mesma métrica em janelas diferentes
+    # (24h, 7d). O ETL nunca a preenche: hoje toda linha nasce "all".
     window = Column(String, default="all")
     computed_at = Column(DateTime, default=datetime.utcnow)
 
