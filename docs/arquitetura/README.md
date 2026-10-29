@@ -11,7 +11,17 @@ cada uma numa notação padrão:
 
 Plataforma analítica full-stack feita como desafio técnico: ingere telemetria de ativos, roda um ETL em Pandas e modelos de scikit-learn para anomalia e risco de falha, e mostra tudo num dashboard React. Sobe com docker-compose.
 
-![Cortex Analytics · desafio técnico de vaga dev](./desafio-tecnico-dev-.svg)
+### Quem usa e para quê (UML)
+
+![Casos de uso · Cortex Analytics · desafio técnico de vaga dev](./desafio-tecnico-dev--1-casos-de-uso.svg)
+
+### Do evento de sensor ao risco no dashboard (BPMN 2.0)
+
+![Processo · Cortex Analytics · desafio técnico de vaga dev](./desafio-tecnico-dev--2-processo.svg)
+
+### Arquitetura (C4, containers)
+
+![Arquitetura · Cortex Analytics · desafio técnico de vaga dev](./desafio-tecnico-dev--3-arquitetura.svg)
 
 Editável: [`desafio-tecnico-dev-.excalidraw`](./desafio-tecnico-dev-.excalidraw), abre em [excalidraw.com](https://excalidraw.com) ou no VS Code com a extensão Excalidraw.
 
